@@ -17,7 +17,9 @@ public class Login1 {
     public String cellPhone;
     public String firstName;
     public String lastName;
-
+    
+    
+   
     //Username check
     public boolean checkUsername(String userName) {
         System.out.println("Checking username: " + userName);
@@ -41,7 +43,7 @@ public class Login1 {
     //Register user
     public String registerUser(String userName, String passWord, String cellPhone, String firstName, String lastName) {
         if (!checkUsername(userName)) {
-            System.out.println("Registering user");
+            System.out.println("Registering user...");
             return "Username is not correctly formatted. Please ensure that your username contains an underscore and is no more than 5 characters in length.";
         }
 
@@ -52,17 +54,20 @@ public class Login1 {
         if (!checkCellPhoneNumber(cellPhone)) {
             return "Cell phone number incorrectly formatted or does not contain international code.";
         }
-
+        
+        
         this.userName = userName;
         this.passWord = passWord;
         this.cellPhone = cellPhone;
         this.firstName = firstName;
         this.lastName = lastName;
+        
+        
 
         return "User successfully registered.";
     }
-
-    //Login user
+    
+     //Login user
     public boolean loginUser(String inputUserName, String inputPassWord) {
         System.out.println("Logging in.");
         return inputUserName.equals(this.userName) && inputPassWord.equals(this.passWord);
@@ -78,4 +83,6 @@ public class Login1 {
     }
     
 }
+    
+    
 //Code referred from chatGpt.
