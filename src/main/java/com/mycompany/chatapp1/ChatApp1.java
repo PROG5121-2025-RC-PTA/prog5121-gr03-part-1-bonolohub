@@ -16,6 +16,14 @@ import java.util.Scanner;
 public class ChatApp1 {
     
     static int totalMessages = 0;
+    // Arrays for Part 3
+    static String[] sentMessages = new String [100];
+    static String[] storedMessages = new String [100];
+    static String[] disregardedMessages = new String [100];
+    static String[] messageIDs = new String [100];
+    static String[] messageHashes = new String [100];
+
+    
 
     public static void main(String[] args) {
         
@@ -62,6 +70,14 @@ public class ChatApp1 {
         // QuickChat<<part2
         
         if (loginSuccess) {
+            
+            loadTestData();
+            showSendersAndRecipients();
+            showLongestSentMessage();
+            searchByMessageID("put id here");
+            deleteMessageByHash("put hash here");
+            displayFullSentMessages();
+
             System.out.println("\nWelcome to Quick Chat!");
 
             System.out.print("How many messages would you like to send today?");
@@ -205,6 +221,109 @@ public class ChatApp1 {
         }
 
         
+    }
+    
+    public static void loadTestData() {
+    String[] recipients = {
+        "+27834559896", "+27838884567", "+27834484566", "08388884568", "+278388884567"};
+
+    String[] messages = {
+        "Did you get the cake?",
+        "Where are you? You are late. I have asked you to be on time.",
+        "Woohoo! I am at your gate.",
+        "It is dinner time?",
+        "Okay, I am leaving without you."};
+
+    String[] flags = {
+        "sent", "stored", "disregard", "sent", "stored"};
+
+    for (int i = 0; i < recipients.length; i++) {
+        String id = generateMessageID();
+        String hash = createHash(messages[i]);
+
+        messageIDs [i] = id;
+        messageHashes [i] = hash;
+
+        String fullMessage = "ID: " + id + ", To: " + recipients[i] + ", Message: " + messages[i];
+
+        switch (flags[i]) {
+            case "sent":
+                sentMessages [i] = fullMessage;
+                break;
+            case "stored":
+                storedMessages [i] = fullMessage;
+                break;
+            case "disregard":
+                disregardedMessages [i] = fullMessage;
+                break;
+        }
+    }
+    }
+        public static String generateMessageID() {
+               return String.valueOf((long)(Math.random() * 1_000_000_0000L));
+     }
+
+       public static String createHash(String message) {
+               return Integer.toHexString(message.hashCode());
+    }
+       public static void showSendersAndRecipients() {
+    for (String msg : sentMessages) {
+        if (msg != null) {
+            System.out.println(msg);
+        }
+    }
+    }
+       public static void showLongestSentMessage() {
+    String longest = "";
+    for (String msg : sentMessages) {
+        if (msg != null && msg.length() > longest.length()) {
+            longest = msg;
+        }
+    }
+    System.out.println("Longest sent message:\n" + longest);
+   }
+       public static void searchByMessageID(String id) {
+    for (int i = 0; i < messageIDs.length; i++) {
+        if (messageIDs [i] != null && messageIDs [i].equals(id)) {
+            System.out.println("Found Message: " + getMessageByID(id));
+            return;
+        }
+    }
+    System.out.println("Message ID not found.");
+    }
+
+public static String getMessageByID(String id) {
+    for (String msg : sentMessages) {
+        if (msg != null && msg.contains(id)) 
+            return msg;
+    }
+    for (String msg : storedMessages) {
+        if (msg != null && msg.contains(id)) 
+            return msg;
+    }
+    for (String msg : disregardedMessages) {
+        if (msg != null && msg.contains(id)) 
+            return msg;
+    }
+    return "Not found.";
+    }
+    public static void deleteMessageByHash(String hash) {
+    for (int i = 0; i < messageHashes.length; i++) {
+        if (messageHashes [i] != null && messageHashes  [i].equals(hash)) {
+            sentMessages [i] = null;
+            messageHashes [i] = null;
+            messageIDs [i] = null;
+            System.out.println("Message deleted.");
+            return;
+        }
+    }
+    System.out.println("Hash not found.");
+    }
+    public static void displayFullSentMessages() {
+    System.out.println("----- Full Sent Message Report -----");
+    for (String msg : sentMessages) {
+        if (msg != null) System.out.println(msg);
+    }
     }
 }
                 
